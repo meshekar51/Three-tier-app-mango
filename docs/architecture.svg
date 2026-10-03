@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" font-family="JetBrains Mono, Consolas, monospace">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#58a6ff"/>
+    </marker>
+    <marker id="g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/>
+    </marker>
+  </defs>
+
+  <rect width="960" height="520" fill="#0d1117"/>
+
+  <text x="30" y="40" fill="#58a6ff" font-size="20" font-weight="bold">&gt; how the tiers connect (Docker)</text>
+  <text x="30" y="64" fill="#8b949e" font-size="12">blue = request · green = response · labels = the exact file that makes each hop happen</text>
+
+  <!-- docker network boundary -->
+  <rect x="250" y="100" width="690" height="330" rx="10" fill="none" stroke="#30363d" stroke-dasharray="6 5"/>
+  <text x="266" y="122" fill="#8b949e" font-size="12">user-defined docker network · Docker DNS turns "backend" and "db" into container IPs</text>
+
+  <!-- browser -->
+  <rect x="30" y="200" width="180" height="110" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text x="120" y="232" fill="#c9d1d9" font-size="15" text-anchor="middle" font-weight="bold">browser</text>
+  <text x="120" y="256" fill="#8b949e" font-size="11" text-anchor="middle">runs app.js</text>
+  <text x="120" y="276" fill="#d29922" font-size="11" text-anchor="middle">API = "/api"</text>
+  <text x="120" y="294" fill="#8b949e" font-size="11" text-anchor="middle">(relative URL)</text>
+
+  <!-- frontend -->
+  <rect x="290" y="190" width="190" height="130" rx="8" fill="#161b22" stroke="#58a6ff"/>
+  <text x="385" y="220" fill="#c9d1d9" font-size="15" text-anchor="middle" font-weight="bold">frontend</text>
+  <text x="385" y="240" fill="#8b949e" font-size="11" text-anchor="middle">nginx · port 80</text>
+  <text x="385" y="266" fill="#c9d1d9" font-size="11" text-anchor="middle">/       → html/css/js</text>
+  <text x="385" y="284" fill="#d29922" font-size="11" text-anchor="middle">/api/   → proxy_pass</text>
+  <text x="385" y="302" fill="#8b949e" font-size="10" text-anchor="middle">nginx.conf</text>
+
+  <!-- backend -->
+  <rect x="530" y="190" width="190" height="130" rx="8" fill="#161b22" stroke="#58a6ff"/>
+  <text x="625" y="220" fill="#c9d1d9" font-size="15" text-anchor="middle" font-weight="bold">backend</text>
+  <text x="625" y="240" fill="#8b949e" font-size="11" text-anchor="middle">Spring Boot · port 5000</text>
+  <text x="625" y="266" fill="#c9d1d9" font-size="11" text-anchor="middle">TaskController</text>
+  <text x="625" y="284" fill="#d29922" font-size="11" text-anchor="middle">HikariCP pool</text>
+  <text x="625" y="302" fill="#8b949e" font-size="10" text-anchor="middle">application.properties</text>
+
+  <!-- db -->
+  <rect x="770" y="190" width="150" height="130" rx="8" fill="#161b22" stroke="#58a6ff"/>
+  <text x="845" y="220" fill="#c9d1d9" font-size="15" text-anchor="middle" font-weight="bold">db</text>
+  <text x="845" y="240" fill="#8b949e" font-size="11" text-anchor="middle">Postgres · 5432</text>
+  <text x="845" y="266" fill="#c9d1d9" font-size="11" text-anchor="middle">table: tasks</text>
+  <text x="845" y="284" fill="#d29922" font-size="11" text-anchor="middle">POSTGRES_USER</text>
+  <text x="845" y="302" fill="#8b949e" font-size="10" text-anchor="middle">init/*.sql</text>
+
+  <!-- request arrows -->
+  <line x1="210" y1="240" x2="288" y2="240" stroke="#58a6ff" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="480" y1="240" x2="528" y2="240" stroke="#58a6ff" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="720" y1="240" x2="768" y2="240" stroke="#58a6ff" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- response arrows -->
+  <line x1="288" y1="280" x2="212" y2="280" stroke="#3fb950" stroke-width="2" marker-end="url(#g)"/>
+  <line x1="528" y1="280" x2="482" y2="280" stroke="#3fb950" stroke-width="2" marker-end="url(#g)"/>
+  <line x1="768" y1="280" x2="722" y2="280" stroke="#3fb950" stroke-width="2" marker-end="url(#g)"/>
+
+  <!-- hop labels -->
+  <text x="30" y="360" fill="#58a6ff" font-size="12" font-weight="bold">① browser → frontend</text>
+  <text x="30" y="378" fill="#c9d1d9" font-size="11">GET localhost:8080/api/health</text>
+  <text x="30" y="394" fill="#8b949e" font-size="11">same host as the page</text>
+  <text x="30" y="410" fill="#8b949e" font-size="11">(-p 8080:80 on frontend)</text>
+
+  <text x="290" y="360" fill="#58a6ff" font-size="12" font-weight="bold">② frontend → backend</text>
+  <text x="290" y="378" fill="#c9d1d9" font-size="11">proxy_pass http://backend:5000</text>
+  <text x="290" y="394" fill="#8b949e" font-size="11">"backend" = container name</text>
+  <text x="290" y="410" fill="#8b949e" font-size="11">path /api/health kept as-is</text>
+
+  <text x="580" y="360" fill="#58a6ff" font-size="12" font-weight="bold">③ backend → db</text>
+  <text x="580" y="378" fill="#c9d1d9" font-size="11">jdbc:postgresql://db:5432/tasks</text>
+  <text x="580" y="394" fill="#8b949e" font-size="11">built from DB_HOST/DB_PORT/DB_NAME</text>
+  <text x="580" y="410" fill="#8b949e" font-size="11">login: DB_USER / DB_PASSWORD</text>
+
+  <!-- response summary -->
+  <rect x="30" y="455" width="900" height="44" rx="6" fill="#161b22" stroke="#30363d"/>
+  <text x="46" y="482" fill="#3fb950" font-size="12">response: {"status":"ok","db":"connected"}  →  app.js sets text + class "ok"  →  style.css paints it green</text>
+</svg>
